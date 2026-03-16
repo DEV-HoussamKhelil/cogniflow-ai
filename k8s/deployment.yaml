@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cogniflow-ai
+  labels:
+    app: cogniflow
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: cogniflow
+  template:
+    metadata:
+      labels:
+        app: cogniflow
+    spec:
+      containers:
+      - name: cogniflow-ai
+        image: dev-houssamkhelil/cogniflow-ai:latest
+        ports:
+        - containerPort: 8000
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+        resources:
+          limits:
+            cpu: "1"
+            memory: "2Gi"
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
